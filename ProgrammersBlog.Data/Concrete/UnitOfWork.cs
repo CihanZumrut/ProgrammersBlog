@@ -30,7 +30,7 @@ namespace ProgrammersBlog.Data.Concrete
 
         public IUserRepository Users => _userRepository ?? new EfUserRepository(_context);
 
-        public async Task<int> SaveASync()
+        public async Task<int> SaveAsync()
         {
             return await _context.SaveChangesAsync();
         }
