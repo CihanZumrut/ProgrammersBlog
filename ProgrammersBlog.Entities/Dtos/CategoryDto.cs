@@ -3,7 +3,7 @@ using ProgrammersBlog.Shared.Entities.Abstract;
 
 namespace ProgrammersBlog.Entities.Dtos
 {
-    public class CategoryDto : DtogetBase
+    public class CategoryDto : DtoGetBase
     {
         public Category Category { get; set; }
     }
