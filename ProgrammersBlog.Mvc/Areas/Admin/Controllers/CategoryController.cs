@@ -55,6 +55,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             return Json(categoryAddAjaxErrorModel);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Update(int categoryId)
         {
             var result = await _categoryService.GetCategoryUpdateDto(categoryId);
@@ -67,6 +68,30 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(CategoryUpdateDto categoryUpdateDto)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _categoryService.Update(categoryUpdateDto, "Cihan Zümrüt");
+                if (result.ResultStatus == ResultStatus.Success)
+                {
+                    var categoryUpdateAjaxModel = JsonSerializer.Serialize(new CategoryUpdateAjaxViewModel
+                    {
+                        CategoryDto = result.Data,
+                        CategoryUpdatePartial = await this.RenderViewToStringAsync("_CategoryUpdatePartial", categoryUpdateDto)
+                    });
+                    return Json(categoryUpdateAjaxModel);
+                }
+            }
+            var categoryUpdateAjaxErrorModel = JsonSerializer.Serialize(new CategoryUpdateAjaxViewModel
+            {
+                CategoryUpdatePartial = await this.RenderViewToStringAsync("_CategoryUpdatePartial", categoryUpdateDto)
+            });
+            return Json(categoryUpdateAjaxErrorModel);
+        }
+
 
         public async Task<JsonResult> GetAllCategories()
         {
