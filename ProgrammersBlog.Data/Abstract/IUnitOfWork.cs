@@ -7,9 +7,7 @@ namespace ProgrammersBlog.Data.Abstract
     {
         IArticleRepository Articles { get; } //unitOfWork.Articles
         ICategoryRepository Categories { get; }
-        ICommentRepository Comments { get; }
-        IRoleRepository Roles { get; }
-        IUserRepository Users { get; } // _unitOfWork.Categories.AddAsync();
+        ICommentRepository Comments { get; }// _unitOfWork.Categories.AddAsync();
         //_unitOfWork.Categories.AddAsync(category);
         //_unitOfWork.Categories.AddAsync(user);
         //_unitOfWork.SaveAsync();
