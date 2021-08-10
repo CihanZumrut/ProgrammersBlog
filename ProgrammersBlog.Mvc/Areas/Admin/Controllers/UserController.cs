@@ -43,16 +43,16 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             // ~/img/user.Picture
             string wwwroot = _env.WebRootPath;
             //cihanzumrut
-            //string fileName2 = Path.GetFileNameWithoutExtension(userAddDto.Picture.FileName);
+            //string fileName2 = Path.GetFileNameWithoutExtension(userAddDto.PictureFile.FileName);
             //.png
-            string fileExtension = Path.GetExtension(userAddDto.Picture.FileName);
+            string fileExtension = Path.GetExtension(userAddDto.PictureFile.FileName);
             DateTime datetime = DateTime.Now;
             //CihanZumrut_587_5_38_12_3_10_2021.png
             string fileName = $"{userAddDto.UserName}_{datetime.FullDateAndTimeStringWithUnderscore()}{fileExtension}";
             var path = Path.Combine($"{wwwroot}/img, fileName");
             await using (var stream = new FileStream(path,FileMode.Create))
             {
-                await userAddDto.Picture.CopyToAsync(stream);
+                await userAddDto.PictureFile.CopyToAsync(stream);
             }
             return fileName; ///CihanZumrut_587_5_38_12_3_10_2021.png - "~/img/user.Picture"
         }
