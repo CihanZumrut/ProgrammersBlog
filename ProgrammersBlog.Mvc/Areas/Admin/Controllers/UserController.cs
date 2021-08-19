@@ -11,6 +11,7 @@ using ProgrammersBlog.Shared.Utilities.Results.ComplexTypes;
 using System;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
@@ -28,6 +29,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             _env = env;
             _mapper = mapper;
         }
+
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -37,14 +39,28 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 ResultStatus = ResultStatus.Success
             });
         }
+
+        [HttpGet]
+        public async Task<JsonResult> GetAllUsers()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            var userListDto = JsonSerializer.Serialize(new UserListDto
+            {
+                Users = users,
+                ResultStatus = ResultStatus.Success
+            }, new JsonSerializerOptions 
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            });
+            return Json(userListDto);
+        }
         [HttpGet]
         public IActionResult Add()
         {
             return PartialView("_UserAddPartial");
         }
-
         [HttpPost]
-        public async  Task<IActionResult> Add(UserAddDto userAddDto)
+        public async Task<IActionResult> Add(UserAddDto userAddDto)
         {
             if (ModelState.IsValid)
             {
@@ -87,6 +103,37 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 UserAddPartial = await this.RenderViewToStringAsync("_UserAddPartial", userAddDto)
             });
             return Json(userAddAjaxModelStateErrorModel);
+
+        }
+        public async Task<JsonResult> Delete(int userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                var deletedUser = JsonSerializer.Serialize(new UserDto
+                {
+                    ResultStatus = ResultStatus.Success,
+                    Message = $"{user.UserName} adlı kullanıcı adına sahip kullanıcı başarıyla silinmiştir.",
+                    User = user
+                });
+                return Json(deletedUser);
+            }
+            else
+            {
+                string errorMessages = String.Empty;
+                foreach (var error in result.Errors)
+                {
+                    errorMessages = $"*{error.Description}\n";
+                }
+                var deletedUserErrorModel = JsonSerializer.Serialize(new UserDto
+                {
+                    ResultStatus = ResultStatus.Error,
+                    Message = $"{user.UserName} adlı kullanıcı adına sahip kullanıcı silinirken bazı hatalar oluştu.\n{errorMessages}",
+                    User = user
+                });
+                return Json(deletedUserErrorModel);
+            }
         }
 
         public async Task<string> ImageUpload(UserAddDto userAddDto)
