@@ -34,7 +34,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             _signInManager = signInManager;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -83,7 +83,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<JsonResult> GetAllUsers()
         {
@@ -98,13 +98,13 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             });
             return Json(userListDto);
         }
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Add()
         {
             return PartialView("_UserAddPartial");
         }
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Add(UserAddDto userAddDto)
         {
@@ -152,7 +152,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<JsonResult> Delete(int userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -186,7 +186,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<PartialViewResult> Update(int userId)
         {
@@ -195,7 +195,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             return PartialView("_UserUpdatePartial", userUpdateDto);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Update(UserUpdateDto userUpdateDto)
         {
@@ -256,7 +256,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         }
 
 
-        [Authorize]
+        [Authorize(Roles = "Admin, Editor")]
         public async Task<string> ImageUpload(string userName, IFormFile pictureFile)
         {
             // ~/img/user.Picture
@@ -276,7 +276,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 
             return fileName; // CihanZumrut_587_5_38_12_3_10_2020.png - "~/img/user.Picture"
         }
-        [Authorize]
+        [Authorize(Roles = "Admin, Editor")]
         public bool ImageDelete(string pictureName)
         {
             string wwwroot = _env.WebRootPath;
