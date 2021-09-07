@@ -80,7 +80,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             {
                 return View("UserLogin");
             }
-            
+
         }
 
         [Authorize]
@@ -206,10 +206,10 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 var oldUserPicture = oldUser.Picture;
                 if (userUpdateDto.PictureFile != null)
                 {
-                    userUpdateDto.Picture = await  ImageUpload(userUpdateDto.UserName, userUpdateDto.PictureFile);
+                    userUpdateDto.Picture = await ImageUpload(userUpdateDto.UserName, userUpdateDto.PictureFile);
                     isNewPictureUploaded = true;
                 }
-                
+
                 var updatedUser = _mapper.Map<UserUpdateDto, User>(userUpdateDto, oldUser);
                 var result = await _userManager.UpdateAsync(updatedUser);
                 if (result.Succeeded)
@@ -293,4 +293,3 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         }
     }
 }
-
