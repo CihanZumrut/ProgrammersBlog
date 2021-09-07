@@ -45,7 +45,7 @@
                                             `
                                 <button class="btn btn-primary btn-sm btn-update" data-id="${user.Id}"><span class="fas fa-edit"></span></button>
                                 <button class="btn btn-danger btn-sm btn-delete" data-id="${user.Id}"><span class="fas fa-minus-circle"></span></button>
-                                             `
+                                            `
                                         ]);
                                     });
                                 dataTable.draw();
@@ -145,7 +145,7 @@
                                 userAddAjaxModel.UserDto.User.PhoneNumber,
                                 `<img src="/img/${userAddAjaxModel.UserDto.User.Picture}" alt="${userAddAjaxModel.UserDto.User.UserName}" style="max-height: 50px; max-width: 50px;" />`,
                                 `
-                                <button class="btn btn-primary btn-sm btn-update" data-id="${userAddAjaxModel.UserDto.User.Id}><span class="fas fa-edit"></span></button>
+                                <button class="btn btn-primary btn-sm btn-update" data-id="${userAddAjaxModel.UserDto.User.Id}"><span class="fas fa-edit"></span></button>
                                 <button class="btn btn-danger btn-sm btn-delete" data-id="${userAddAjaxModel.UserDto.User.Id}"><span class="fas fa-minus-circle"></span></button>
                             `
                             ]).draw();
@@ -198,7 +198,7 @@
                             if (userDto.ResultStatus === 0) {
                                 Swal.fire(
                                     'Silindi!',
-                                    `${userDto.Uategory.UserName} adlı kullanıcı başarıyla silinmiştir.`,
+                                    `${userDto.User.UserName} adlı kullanıcı başarıyla silinmiştir.`,
                                     'success'
                                 );
 
@@ -220,17 +220,17 @@
             });
         });
 
-    /* Ajax GET / Getting the _CategoryUpdatePartial as Modal Form starts from here. */
+    /* Ajax GET / Getting the _UserUpdatePartial as Modal Form starts from here. */
 
     $(function () {
-        const url = '/Admin/Category/Update/';
+        const url = '/Admin/User/Update/';
         const placeHolderDiv = $('#modalPlaceHolder');
         $(document).on('click',
             '.btn-update',
             function (event) {
                 event.preventDefault();
                 const id = $(this).attr('data-id');
-                $.get(url, { categoryId: id }).done(function (data) {
+                $.get(url, { userId: id }).done(function (data) {
                     placeHolderDiv.html(data);
                     placeHolderDiv.find('.modal').modal('show');
                 }).fail(function () {

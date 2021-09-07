@@ -39,7 +39,6 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 ResultStatus = ResultStatus.Success
             });
         }
-
         [HttpGet]
         public async Task<JsonResult> GetAllUsers()
         {
@@ -48,7 +47,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             {
                 Users = users,
                 ResultStatus = ResultStatus.Success
-            }, new JsonSerializerOptions 
+            }, new JsonSerializerOptions
             {
                 ReferenceHandler = ReferenceHandler.Preserve
             });
@@ -105,6 +104,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             return Json(userAddAjaxModelStateErrorModel);
 
         }
+
         public async Task<JsonResult> Delete(int userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -126,33 +126,57 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 {
                     errorMessages = $"*{error.Description}\n";
                 }
+
                 var deletedUserErrorModel = JsonSerializer.Serialize(new UserDto
                 {
                     ResultStatus = ResultStatus.Error,
-                    Message = $"{user.UserName} adlı kullanıcı adına sahip kullanıcı silinirken bazı hatalar oluştu.\n{errorMessages}",
+                    Message =
+                        $"{user.UserName} adlı kullanıcı adına sahip kullanıcı silinirken bazı hatalar oluştu.\n{errorMessages}",
                     User = user
                 });
                 return Json(deletedUserErrorModel);
             }
         }
 
+        public async Task<PartialViewResult> Update(int userId)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var userUpdateDto = _mapper.Map<UserUpdateDto>(user);
+            return PartialView("_UserUpdatePartial", userUpdateDto);
+        }
         public async Task<string> ImageUpload(UserAddDto userAddDto)
         {
             // ~/img/user.Picture
             string wwwroot = _env.WebRootPath;
-            //cihanzumrut
-            //string fileName2 = Path.GetFileNameWithoutExtension(userAddDto.PictureFile.FileName);
+            // cihanzumrut     
+            // string fileName2 = Path.GetFileNameWithoutExtension(userAddDto.PictureFile.FileName);
             //.png
             string fileExtension = Path.GetExtension(userAddDto.PictureFile.FileName);
-            DateTime datetime = DateTime.Now;
-            //CihanZumrut_587_5_38_12_3_10_2021.png
-            string fileName = $"{userAddDto.UserName}_{datetime.FullDateAndTimeStringWithUnderscore()}{fileExtension}";
-            var path = Path.Combine($"{wwwroot}/img, fileName");
-            await using (var stream = new FileStream(path,FileMode.Create))
+            DateTime dateTime = DateTime.Now;
+            // CihanZumrut_587_5_38_12_3_10_2020.png
+            string fileName = $"{userAddDto.UserName}_{dateTime.FullDateAndTimeStringWithUnderscore()}{fileExtension}";
+            var path = Path.Combine($"{wwwroot}/img", fileName);
+            await using (var stream = new FileStream(path, FileMode.Create))
             {
                 await userAddDto.PictureFile.CopyToAsync(stream);
             }
-            return fileName; ///CihanZumrut_587_5_38_12_3_10_2021.png - "~/img/user.Picture"
+
+            return fileName; // CihanZumrut_587_5_38_12_3_10_2020.png - "~/img/user.Picture"
+        }
+        public bool ImageDelete(string pictureName)
+        {
+            string wwwroot = _env.WebRootPath;
+            var fileToDelete = Path.Combine($"{wwwroot}/img", pictureName);
+            if (System.IO.File.Exists(fileToDelete))
+            {
+                System.IO.File.Delete(fileToDelete);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
+
