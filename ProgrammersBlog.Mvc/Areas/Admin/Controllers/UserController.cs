@@ -82,6 +82,13 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             }
 
         }
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home", new { Area = "" });
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
