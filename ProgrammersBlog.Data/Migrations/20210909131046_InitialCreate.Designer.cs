@@ -10,7 +10,7 @@ using ProgrammersBlog.Data.Concrete.EntityFramework.Contexts;
 namespace ProgrammersBlog.Data.Migrations
 {
     [DbContext(typeof(ProgrammersBlogContext))]
-    [Migration("20210907131836_InitialCreate")]
+    [Migration("20210909131046_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,7 +18,7 @@ namespace ProgrammersBlog.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("ProgrammersBlog.Entities.Concrete.Article", b =>
@@ -158,12 +158,12 @@ namespace ProgrammersBlog.Data.Migrations
                         {
                             Id = 1,
                             CreatedByName = "InitialCreate",
-                            CreatedDate = new DateTime(2021, 9, 7, 16, 18, 35, 726, DateTimeKind.Local).AddTicks(8195),
+                            CreatedDate = new DateTime(2021, 9, 9, 16, 10, 46, 559, DateTimeKind.Local).AddTicks(3554),
                             Description = "C# Programlama Dili İle İlgili En Güncel Bilgiler ",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByName = "InitialCreate",
-                            ModifiedDate = new DateTime(2021, 9, 7, 16, 18, 35, 726, DateTimeKind.Local).AddTicks(8522),
+                            ModifiedDate = new DateTime(2021, 9, 9, 16, 10, 46, 559, DateTimeKind.Local).AddTicks(3882),
                             Name = "C#",
                             Note = "C# Blog Kategorisi"
                         },
@@ -171,12 +171,12 @@ namespace ProgrammersBlog.Data.Migrations
                         {
                             Id = 2,
                             CreatedByName = "InitialCreate",
-                            CreatedDate = new DateTime(2021, 9, 7, 16, 18, 35, 726, DateTimeKind.Local).AddTicks(8810),
+                            CreatedDate = new DateTime(2021, 9, 9, 16, 10, 46, 559, DateTimeKind.Local).AddTicks(4176),
                             Description = "C++ Programlama Dili İle İlgili En Güncel Bilgiler ",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByName = "InitialCreate",
-                            ModifiedDate = new DateTime(2021, 9, 7, 16, 18, 35, 726, DateTimeKind.Local).AddTicks(8811),
+                            ModifiedDate = new DateTime(2021, 9, 9, 16, 10, 46, 559, DateTimeKind.Local).AddTicks(4177),
                             Name = "C++",
                             Note = "C++ Blog Kategorisi"
                         },
@@ -184,12 +184,12 @@ namespace ProgrammersBlog.Data.Migrations
                         {
                             Id = 3,
                             CreatedByName = "InitialCreate",
-                            CreatedDate = new DateTime(2021, 9, 7, 16, 18, 35, 726, DateTimeKind.Local).AddTicks(8815),
+                            CreatedDate = new DateTime(2021, 9, 9, 16, 10, 46, 559, DateTimeKind.Local).AddTicks(4181),
                             Description = "JavaScript Programlama Dili İle İlgili En Güncel Bilgiler ",
                             IsActive = true,
                             IsDeleted = false,
                             ModifiedByName = "InitialCreate",
-                            ModifiedDate = new DateTime(2021, 9, 7, 16, 18, 35, 726, DateTimeKind.Local).AddTicks(8816),
+                            ModifiedDate = new DateTime(2021, 9, 9, 16, 10, 46, 559, DateTimeKind.Local).AddTicks(4182),
                             Name = "JavaScript",
                             Note = "JavaScript Blog Kategorisi"
                         });
@@ -275,14 +275,14 @@ namespace ProgrammersBlog.Data.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "bd8315c3-a615-414f-8713-94ca4dc8769f",
+                            ConcurrencyStamp = "3743d640-8d66-4e9e-93d0-d9256313cb80",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "f0fd7443-9b41-4cc7-b4b2-963072b5acb0",
+                            ConcurrencyStamp = "355de317-204b-47f6-9ceb-79d871ec2a18",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         });
@@ -387,17 +387,17 @@ namespace ProgrammersBlog.Data.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "05f925f1-bdfe-4bd1-a7ad-c29c377757a7",
+                            ConcurrencyStamp = "7dace82f-6c73-48c8-b9e1-ca5e5529206a",
                             Email = "adminuser@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINUSER@GMAIL.COM",
                             NormalizedUserName = "ADMINUSER",
-                            PasswordHash = "AQAAAAEAACcQAAAAENCrVq752AyRmE3cnfn7K+31rJap9jN+GLWoIkjR6V9a9wUfbiN0BX/5DnMVUHRrCw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGtk4X4trUblix5Y8yV3w7GqwoiRwa+gLAaj7oqKLRf38YydGGRmx4DDNVP28Mb3qA==",
                             PhoneNumber = "+905555555555",
                             PhoneNumberConfirmed = true,
                             Picture = "defaultUser.png",
-                            SecurityStamp = "08bd4ea1-dfc5-4099-bb36-748f2061c8b7",
+                            SecurityStamp = "c6735d7b-2825-4775-816b-61ac7ea0672d",
                             TwoFactorEnabled = false,
                             UserName = "adminuser"
                         },
@@ -405,17 +405,17 @@ namespace ProgrammersBlog.Data.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7fe15fd4-ace9-44f0-9425-d1ebf5b66da9",
+                            ConcurrencyStamp = "8019afe0-d7f1-47e9-abf3-6e2f13de99b1",
                             Email = "editoruser@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "EDITORUSER@GMAIL.COM",
                             NormalizedUserName = "EDITORUSER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKpisot4g84HC+FKS8rBB8BBtFj8F8gt1KrAge/qUvudToU4b5e8nE/YLE7mRoJ7Ug==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELvSRxVlT9FxGeNJvvn+A/CQtkX4VGcwniHA22+ggX8dONWTK3RaAMe28Qp4ZkmGWQ==",
                             PhoneNumber = "+905555555555",
                             PhoneNumberConfirmed = true,
                             Picture = "defaultUser.png",
-                            SecurityStamp = "152e8389-0179-4bdc-951c-444eca1f41d8",
+                            SecurityStamp = "59b6a246-81f7-479c-9573-b42c19ea8941",
                             TwoFactorEnabled = false,
                             UserName = "editoruser"
                         });
