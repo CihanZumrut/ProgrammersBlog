@@ -17,5 +17,7 @@ namespace ProgrammersBlog.Services.Abstract
         Task<IDataResult<CategoryDto>> Update(CategoryUpdateDto categoryUpdateDto, string modifiedByName);
         Task<IDataResult<CategoryDto>> Delete(int categoryId, string modifiedByName); // IsDeleted = true
         Task<IResult> HardDelete(int categoryId); // Bu proje özelinde ekledim. fakat gerçek projelerde veritabanından asla bir veri silinmez!!
+        Task<IDataResult<int>> Count();
+        Task<IDataResult<int>> CountByIsDeleted();
     }
 }
