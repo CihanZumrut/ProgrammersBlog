@@ -14,7 +14,7 @@ namespace ProgrammersBlog.Services.Extensions
         public static IServiceCollection LoadMyServices(this IServiceCollection serviceCollection, string connectionString)
         {
             serviceCollection.AddDbContext<ProgrammersBlogContext>(options => options.UseSqlServer(connectionString));
-            serviceCollection.AddIdentity<User, Role>(options => 
+            serviceCollection.AddIdentity<User, Role>(options =>
             {
                 //User Password Options
                 options.Password.RequireDigit = false;

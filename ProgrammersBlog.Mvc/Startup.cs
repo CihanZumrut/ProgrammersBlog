@@ -32,7 +32,7 @@ namespace ProgrammersBlog.Mvc
             });
             services.AddSession();
             services.AddAutoMapper(typeof(CategoryProfile), typeof(ArticleProfile), typeof(UserProfile));
-            services.LoadMyServices(connectionString:Configuration.GetConnectionString("LocalDB"));
+            services.LoadMyServices(connectionString: Configuration.GetConnectionString("LocalDB"));
             services.AddScoped<IImageHelper, ImageHelper>();
             services.ConfigureApplicationCookie(options =>
             {
