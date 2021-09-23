@@ -15,6 +15,9 @@
                 },
                 className: 'btn btn-success',
                 action: function (e, dt, node, config) {
+                    let url = window.location.href;
+                    url = url.replace("/Index", "");
+                    window.open(`${url}/Add`, "_self");
                 }
             },
             {
@@ -102,7 +105,7 @@
 
     /* DataTables end here */
 
-    /* Ajax POST / Deleting a User starts from here */
+    /* Ajax POST / Deleting a Article starts from here */
 
     $(document).on('click',
         '.btn-delete',
