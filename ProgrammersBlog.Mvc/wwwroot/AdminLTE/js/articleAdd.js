@@ -1,4 +1,7 @@
-﻿$(document).ready(function() {
+﻿$(document).ready(function () {
+
+    // Trumbowyg
+
     $('#text-editor').trumbowyg({
         btns: [
             ['viewHTML'],
@@ -21,7 +24,7 @@
         plugins: {
             colors: {
                 foreColorList: [
-                    'ff0000', '00ff00', '0000ff'
+                    'ff0000', '00ff00', '0000ff', '54e346'
                 ],
                 backColorList: [
                     '000', '333', '555'
@@ -30,4 +33,47 @@
             }
         }
     });
+
+    // Trumbowyg
+
+    // Select2
+
+    $('#categoryList').select2({
+        theme: 'bootstrap4',
+        placeholder: "Lütfen bir kategori seçiniz...",
+        allowClear: true
+    });
+
+    // Select2
+
+
+    // jQuery UI - DatePicker
+
+    $(function () {
+        $("#datepicker").datepicker({
+            closeText: "kapat",
+            prevText: "&#x3C;geri",
+            nextText: "ileri&#x3e",
+            currentText: "bugün",
+            monthNames: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
+                "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+            monthNamesShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz",
+                "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
+            dayNames: ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"],
+            dayNamesShort: ["Pz", "Pt", "Sa", "Ça", "Pe", "Cu", "Ct"],
+            dayNamesMin: ["Pz", "Pt", "Sa", "Ça", "Pe", "Cu", "Ct"],
+            weekHeader: "Hf",
+            dateFormat: "dd.mm.yy",
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: "",
+            duration: 1000,
+            minDate: -3,
+            maxDate: +3
+        });
+    });
+
+
+    // jQuery UI - DatePicker
 });
