@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProgrammersBlog.Mvc.Areas.Admin.Models
 {
@@ -63,8 +61,10 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Models
         public bool IsActive { get; set; }
         
         [Required]
+        
         public int UserId { get; set; }
         
         public IList<Category> Categories { get; set; }
+
     }
 }
