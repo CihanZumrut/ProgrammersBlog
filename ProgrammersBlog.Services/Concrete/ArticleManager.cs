@@ -38,14 +38,8 @@ namespace ProgrammersBlog.Services.Concrete
         public async Task<IDataResult<int>> CountAsync()
         {
             var articlesCount = await _unitOfWork.Articles.CountAsync();
-            if (articlesCount > -1)
-            {
-                return new DataResult<int>(ResultStatus.Success, articlesCount);
-            }
-            else
-            {
-                return new DataResult<int>(ResultStatus.Error, $"Beklenmeyen bir hata ile karşılaşıldı.", -1);
-            }
+            if (articlesCount > -1) return new DataResult<int>(ResultStatus.Success, articlesCount);
+            else return new DataResult<int>(ResultStatus.Error, $"Beklenmeyen bir hata ile karşılaşıldı.", -1);
         }
 
         public async Task<IDataResult<int>> CountByNonDeletedAsync()
