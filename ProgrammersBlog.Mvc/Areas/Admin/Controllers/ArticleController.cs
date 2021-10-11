@@ -8,6 +8,7 @@ using ProgrammersBlog.Mvc.Areas.Admin.Models;
 using ProgrammersBlog.Mvc.Helpers.Abstract;
 using ProgrammersBlog.Services.Abstract;
 using ProgrammersBlog.Shared.Utilities.Results.ComplexTypes;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
@@ -125,6 +126,13 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
             var categories = await _categoryService.GetAllByNonDeletedAndActiveAsync();
             articleUpdateViewModel.Categories = categories.Data.Categories;
             return View(articleUpdateViewModel);
+        }
+        [HttpPost]
+        public async Task<JsonResult> Delete(int articleId)
+        {
+            var result = await _articleService.DeleteAsync(articleId, LoggedInUser.UserName);
+            var articleResult = JsonSerializer.Serialize(result);
+            return Json(articleResult);
         }
 
     }
