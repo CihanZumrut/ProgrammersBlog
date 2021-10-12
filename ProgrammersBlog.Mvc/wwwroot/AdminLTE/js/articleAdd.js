@@ -3,6 +3,7 @@
     // Trumbowyg
 
     $('#text-editor').trumbowyg({
+        lang: 'tr',
         btns: [
             ['viewHTML'],
             ['undo', 'redo'], // Only supported in Blink browsers
