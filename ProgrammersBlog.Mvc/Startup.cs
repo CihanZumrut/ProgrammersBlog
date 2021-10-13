@@ -36,8 +36,8 @@ namespace ProgrammersBlog.Mvc
             services.AddScoped<IImageHelper, ImageHelper>();
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = new PathString("/Admin/User/Login");
-                options.LogoutPath = new PathString("/Admin/User/Logout");
+                options.LoginPath = new PathString("/Admin/Auth/Login");
+                options.LogoutPath = new PathString("/Admin/Auth/Logout");
                 options.Cookie = new CookieBuilder 
                 {
                     Name = "ProgrammersBlog",
@@ -47,7 +47,7 @@ namespace ProgrammersBlog.Mvc
                 };
                 options.SlidingExpiration = true;
                 options.ExpireTimeSpan = System.TimeSpan.FromDays(7);
-                options.AccessDeniedPath = new PathString("/Admin/User/Accessdenied");
+                options.AccessDeniedPath = new PathString("/Admin/Auth/Accessdenied");
             });
         }
 
