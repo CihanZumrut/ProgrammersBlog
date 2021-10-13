@@ -70,6 +70,11 @@
                 return $"Sayın {createdByName}, yorumunuz başarıyla eklenmiştir.";
             }
 
+            public static string Approve(int commentId)
+            {
+                return $"Sayın {commentId} no'lu yorum başarıyla onaylanmıştır.";
+            }
+
             public static string Update(string createdByName)
             {
                 return $"{createdByName} tarafından eklenen yorum başarıyla güncellenmiştir.";

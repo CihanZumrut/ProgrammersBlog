@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ProgrammersBlog.Entities.Dtos;
 using ProgrammersBlog.Shared.Utilities.Results.Abstract;
 
@@ -16,6 +12,7 @@ namespace ProgrammersBlog.Services.Abstract
         Task<IDataResult<CommentListDto>> GetAllByDeletedAsync();
         Task<IDataResult<CommentListDto>> GetAllByNonDeletedAsync();
         Task<IDataResult<CommentListDto>> GetAllByNonDeletedAndActiveAsync();
+        Task<IDataResult<CommentDto>> ApproveAsync(int commentId, string modifiedByName);
         Task<IDataResult<CommentDto>> AddAsync(CommentAddDto commentAddDto);
         Task<IDataResult<CommentDto>> UpdateAsync(CommentUpdateDto commentUpdateDto, string modifiedByName);
         Task<IDataResult<CommentDto>> DeleteAsync(int commentId, string modifiedByName);
