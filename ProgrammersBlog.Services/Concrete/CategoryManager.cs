@@ -12,13 +12,10 @@ using System.Threading.Tasks;
 
 namespace ProgrammersBlog.Services.Concrete
 {
-    public class CategoryManager :ManagerBase, ICategoryService
+    public class CategoryManager : ManagerBase, ICategoryService
     {
-        
-
-        public CategoryManager(IUnitOfWork unitOfWork, IMapper mapper):base(unitOfWork,mapper)
+        public CategoryManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
-            
         }
 
         public async Task<IDataResult<CategoryDto>> GetAsync(int categoryId)
@@ -43,7 +40,7 @@ namespace ProgrammersBlog.Services.Concrete
         /// <summary>
         /// Verilen ID parametresine ait kategorinin CategoryUpdateDto temsilini geriye döner.
         /// </summary>
-        /// <param name="categoryId">0'dan büyük bir integer ID değeri</param>
+        /// <param name="categoryId">0'dan büyük integer bir ID değeri</param>
         /// <returns>Asenkron bir operasyon ile Task olarak işlem sonucu DataResult tipinde geriye döner.</returns>
         public async Task<IDataResult<CategoryUpdateDto>> GetCategoryUpdateDtoAsync(int categoryId)
         {
@@ -112,11 +109,25 @@ namespace ProgrammersBlog.Services.Concrete
             return new DataResult<CategoryListDto>(ResultStatus.Error, Messages.Category.NotFound(isPlural: true), null);
         }
 
+        public async Task<IDataResult<CategoryListDto>> GetAllByDeletedAsync()
+        {
+            var categories = await UnitOfWork.Categories.GetAllAsync(c => c.IsDeleted);
+            if (categories.Count > -1)
+            {
+                return new DataResult<CategoryListDto>(ResultStatus.Success, new CategoryListDto
+                {
+                    Categories = categories,
+                    ResultStatus = ResultStatus.Success
+                });
+            }
+            return new DataResult<CategoryListDto>(ResultStatus.Error, Messages.Category.NotFound(isPlural: true), null);
+        }
+
         /// <summary>
-        /// Verilen CategoryAddDto ve CreatedByName parametresine ait bilgiler ile yeni bir Category ekler.
+        /// Verilen CategoryAddDto ve CreatedByName parametrelerine ait bilgiler ile yeni bir Category ekler.
         /// </summary>
         /// <param name="categoryAddDto">categoryAddDto tipinde eklenecek kategori bilgileri</param>
-        /// <param name="createdByName">string tipinde kullanıcının, kullanıcı adı</param>
+        /// <param name="createdByName">string tipinde kullanıcının kullanıcı adı</param>
         /// <returns>Asenkron bir operasyon ile Task olarak bizlere ekleme işleminin sonucunu DataResult tipinde döner.</returns>
         public async Task<IDataResult<CategoryDto>> AddAsync(CategoryAddDto categoryAddDto, string createdByName)
         {
@@ -154,6 +165,7 @@ namespace ProgrammersBlog.Services.Concrete
             if (category != null)
             {
                 category.IsDeleted = true;
+                category.IsActive = false;
                 category.ModifiedByName = modifiedByName;
                 category.ModifiedDate = DateTime.Now;
                 var deletedCategory = await UnitOfWork.Categories.UpdateAsync(category);
@@ -163,6 +175,32 @@ namespace ProgrammersBlog.Services.Concrete
                     Category = deletedCategory,
                     ResultStatus = ResultStatus.Success,
                     Message = Messages.Category.Delete(deletedCategory.Name)
+                });
+            }
+            return new DataResult<CategoryDto>(ResultStatus.Error, Messages.Category.NotFound(isPlural: false), new CategoryDto
+            {
+                Category = null,
+                ResultStatus = ResultStatus.Error,
+                Message = Messages.Category.NotFound(isPlural: false)
+            });
+        }
+
+        public async Task<IDataResult<CategoryDto>> UndoDeleteAsync(int categoryId, string modifiedByName)
+        {
+            var category = await UnitOfWork.Categories.GetAsync(c => c.Id == categoryId);
+            if (category != null)
+            {
+                category.IsDeleted = false;
+                category.IsActive = true;
+                category.ModifiedByName = modifiedByName;
+                category.ModifiedDate = DateTime.Now;
+                var deletedCategory = await UnitOfWork.Categories.UpdateAsync(category);
+                await UnitOfWork.SaveAsync();
+                return new DataResult<CategoryDto>(ResultStatus.Success, Messages.Category.UndoDelete(deletedCategory.Name), new CategoryDto
+                {
+                    Category = deletedCategory,
+                    ResultStatus = ResultStatus.Success,
+                    Message = Messages.Category.UndoDelete(deletedCategory.Name)
                 });
             }
             return new DataResult<CategoryDto>(ResultStatus.Error, Messages.Category.NotFound(isPlural: false), new CategoryDto

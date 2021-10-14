@@ -12,12 +12,12 @@ using ProgrammersBlog.Shared.Utilities.Results.Concrete;
 
 namespace ProgrammersBlog.Services.Concrete
 {
-    public class CommentManager :ManagerBase, ICommentService
+    public class CommentManager : ManagerBase, ICommentService
     {
 
-        public CommentManager(IUnitOfWork unitOfWork, IMapper mapper):base(unitOfWork,mapper)
+        public CommentManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
-            
+
         }
 
         public async Task<IDataResult<CommentDto>> GetAsync(int commentId)
@@ -69,7 +69,7 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<CommentListDto>> GetAllByDeletedAsync()
         {
-            var comments = await UnitOfWork.Comments.GetAllAsync(c=>c.IsDeleted, c => c.Article);
+            var comments = await UnitOfWork.Comments.GetAllAsync(c => c.IsDeleted, c => c.Article);
             if (comments.Count > -1)
             {
                 return new DataResult<CommentListDto>(ResultStatus.Success, new CommentListDto
@@ -101,7 +101,7 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<CommentListDto>> GetAllByNonDeletedAndActiveAsync()
         {
-            var comments = await UnitOfWork.Comments.GetAllAsync(c => !c.IsDeleted&&c.IsActive, c => c.Article);
+            var comments = await UnitOfWork.Comments.GetAllAsync(c => !c.IsDeleted && c.IsActive, c => c.Article);
             if (comments.Count > -1)
             {
                 return new DataResult<CommentListDto>(ResultStatus.Success, new CommentListDto
@@ -113,6 +113,25 @@ namespace ProgrammersBlog.Services.Concrete
             {
                 Comments = null,
             });
+        }
+
+        public async Task<IDataResult<CommentDto>> ApproveAsync(int commentId, string modifiedByName)
+        {
+            var comment = await UnitOfWork.Comments.GetAsync(c => c.Id == commentId, c => c.Article);
+            if (comment != null)
+            {
+                comment.IsActive = true;
+                comment.ModifiedByName = modifiedByName;
+                comment.ModifiedDate = DateTime.Now;
+                var updatedComment = await UnitOfWork.Comments.UpdateAsync(comment);
+                await UnitOfWork.SaveAsync();
+                return new DataResult<CommentDto>(ResultStatus.Success, Messages.Comment.Approve(commentId), new CommentDto
+                {
+                    Comment = updatedComment
+                });
+            }
+
+            return new DataResult<CommentDto>(ResultStatus.Error, Messages.Comment.NotFound(isPlural: false), null);
         }
 
         public async Task<IDataResult<CommentDto>> AddAsync(CommentAddDto commentAddDto)
@@ -146,6 +165,7 @@ namespace ProgrammersBlog.Services.Concrete
             if (comment != null)
             {
                 comment.IsDeleted = true;
+                comment.IsActive = false;
                 comment.ModifiedByName = modifiedByName;
                 comment.ModifiedDate = DateTime.Now;
                 var deletedComment = await UnitOfWork.Comments.UpdateAsync(comment);
@@ -173,6 +193,28 @@ namespace ProgrammersBlog.Services.Concrete
             return new Result(ResultStatus.Error, Messages.Comment.NotFound(isPlural: false));
         }
 
+        public async Task<IDataResult<CommentDto>> UndoDeleteAsync(int commentId, string modifiedByName)
+        {
+            var comment = await UnitOfWork.Comments.GetAsync(c => c.Id == commentId);
+            if (comment != null)
+            {
+                comment.IsDeleted = false;
+                comment.IsActive = true;
+                comment.ModifiedByName = modifiedByName;
+                comment.ModifiedDate = DateTime.Now;
+                var deletedComment = await UnitOfWork.Comments.UpdateAsync(comment);
+                await UnitOfWork.SaveAsync();
+                return new DataResult<CommentDto>(ResultStatus.Success, Messages.Comment.UndoDelete(deletedComment.CreatedByName), new CommentDto
+                {
+                    Comment = deletedComment,
+                });
+            }
+            return new DataResult<CommentDto>(ResultStatus.Error, Messages.Comment.NotFound(isPlural: false), new CommentDto
+            {
+                Comment = null,
+            });
+        }
+
         public async Task<IDataResult<int>> CountAsync()
         {
             var commentsCount = await UnitOfWork.Comments.CountAsync();
@@ -188,7 +230,7 @@ namespace ProgrammersBlog.Services.Concrete
 
         public async Task<IDataResult<int>> CountByNonDeletedAsync()
         {
-            var commentsCount = await UnitOfWork.Comments.CountAsync(c=>!c.IsDeleted);
+            var commentsCount = await UnitOfWork.Comments.CountAsync(c => !c.IsDeleted);
             if (commentsCount > -1)
             {
                 return new DataResult<int>(ResultStatus.Success, commentsCount);
@@ -197,24 +239,6 @@ namespace ProgrammersBlog.Services.Concrete
             {
                 return new DataResult<int>(ResultStatus.Error, $"Beklenmeyen bir hata ile karşılaşıldı.", -1);
             }
-        }
-
-        public async Task<IDataResult<CommentDto>> ApproveAsync(int commentId, string modifiedByName)
-        {
-            var comment = await UnitOfWork.Comments.GetAsync(c => c.Id == commentId, c => c.Article);
-            if (comment != null)
-            {
-                comment.IsActive = true;
-                comment.ModifiedByName = modifiedByName;
-                comment.ModifiedDate = DateTime.Now;
-                var updatedComment = await UnitOfWork.Comments.UpdateAsync(comment);
-                await UnitOfWork.SaveAsync();
-                return new DataResult<CommentDto>(ResultStatus.Success, Messages.Comment.Approve(commentId), new CommentDto 
-                {
-                    Comment = updatedComment
-                });
-            }
-            return new DataResult<CommentDto>(ResultStatus.Error, Messages.Comment.NotFound(isPlural: false), null);
         }
     }
 }
