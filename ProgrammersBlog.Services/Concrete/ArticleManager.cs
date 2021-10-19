@@ -8,6 +8,7 @@ using ProgrammersBlog.Shared.Utilities.Results.Abstract;
 using ProgrammersBlog.Shared.Utilities.Results.ComplexTypes;
 using ProgrammersBlog.Shared.Utilities.Results.Concrete;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProgrammersBlog.Services.Concrete
@@ -221,6 +222,18 @@ namespace ProgrammersBlog.Services.Concrete
             {
                 return new DataResult<int>(ResultStatus.Error, $"Beklenmeyen bir hata ile karşılaşıldı.", -1);
             }
+        }
+
+        public async  Task<IDataResult<ArticleListDto>> GetAllByViewCountAsync(bool isAscending, int? takeSize)
+        {
+            var articles = await UnitOfWork.Articles.GetAllAsync(a => a.IsActive && !a.IsDeleted, a => a.Category, a => a.User);
+            var sortedArticles = isAscending 
+                ? articles.OrderBy(a => a.ViewCount) 
+                : articles.OrderByDescending(a => a.ViewCount);
+            return new DataResult<ArticleListDto>(ResultStatus.Success, new ArticleListDto
+            {
+                Articles = takeSize == null ? sortedArticles.ToList() : sortedArticles.Take(takeSize.Value).ToList()
+            });
         }
     }
 }
