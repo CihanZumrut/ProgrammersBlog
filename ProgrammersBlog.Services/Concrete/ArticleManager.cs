@@ -302,5 +302,18 @@ namespace ProgrammersBlog.Services.Concrete
                 return new DataResult<int>(ResultStatus.Error, $"Beklenmeyen bir hata ile karşılaşıldı.", -1);
             }
         }
+
+        public async Task<IResult> IncreaseViewCountAsync(int articleId)
+        {
+            var article = await UnitOfWork.Articles.GetAsync(a => a.Id == articleId);
+            if (article == null)
+            {
+                return new Result(ResultStatus.Error, Messages.Article.NotFound(false));
+            }
+            article.ViewCount += 1;
+            await UnitOfWork.Articles.UpdateAsync(article);
+            await UnitOfWork.SaveAsync();
+            return new Result(ResultStatus.Success, Messages.Article.IncreaseViewCount(article.Title));
+        }
     }
 }

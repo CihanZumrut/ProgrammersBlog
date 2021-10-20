@@ -62,6 +62,10 @@
             {
                 return $"{articleTitle} başlıklı makale başarıyla arşivden geri getirilmiştir.";
             }
+            public static string IncreaseViewCount(string articleTitle)
+            {
+                return $"{articleTitle} başlıklı makalenin okunma sayısı arttırılmıştır.";
+            }
         }
         public static class Comment
         {
