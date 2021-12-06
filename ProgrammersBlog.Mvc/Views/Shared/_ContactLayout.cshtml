@@ -48,7 +48,7 @@
         <div class="container">
             <p class="m-0 text-center text-white">Tüm Hakları Saklıdır &copy; ProgrammersBlog 2021</p>
         </div>-->
-        <!-- /.container -->
+    <!-- /.container -->
     <!--</foote-->r>
 
     <!-- Bootstrap core JavaScript -->
@@ -56,6 +56,7 @@
     <script src="~/BlogHome/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", false)
+    @await Component.InvokeAsync("NToastNotify")
 </body>
 
 </html>
