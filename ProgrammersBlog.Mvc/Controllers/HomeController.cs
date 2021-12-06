@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ProgrammersBlog.Entities.Concrete;
 using ProgrammersBlog.Entities.Dtos;
 using ProgrammersBlog.Services.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProgrammersBlog.Mvc.Controllers
 {
@@ -31,12 +31,13 @@ namespace ProgrammersBlog.Mvc.Controllers
         [HttpGet]
         public IActionResult About()
         {
-            throw new Exception("Hata");
+            throw new Exception("Hata!");
             return View(_aboutUsPageInfo);
         }
         [HttpGet]
         public IActionResult Contact()
         {
+            throw new NullReferenceException();
             return View();
         }
         [HttpPost]

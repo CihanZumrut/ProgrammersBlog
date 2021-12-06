@@ -1,4 +1,11 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProgrammersBlog.Data.Abstract;
@@ -10,12 +17,6 @@ using ProgrammersBlog.Services.Utilities;
 using ProgrammersBlog.Shared.Utilities.Results.Abstract;
 using ProgrammersBlog.Shared.Utilities.Results.ComplexTypes;
 using ProgrammersBlog.Shared.Utilities.Results.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace ProgrammersBlog.Services.Concrete
 {
@@ -128,7 +129,6 @@ namespace ProgrammersBlog.Services.Concrete
             var articles =
                 await UnitOfWork.Articles.GetAllAsync(a => a.IsDeleted, ar => ar.User,
                     ar => ar.Category);
-            
             if (articles.Count > -1)
             {
                 return new DataResult<ArticleListDto>(ResultStatus.Success, new ArticleListDto
