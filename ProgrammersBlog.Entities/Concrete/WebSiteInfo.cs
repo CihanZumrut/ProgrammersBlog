@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProgrammersBlog.Entities.Concrete
 {
-    public class WebSiteInfo
+    public class WebsiteInfo
     {
         public string Title { get; set; }
         public string MenuTitle { get; set; }
