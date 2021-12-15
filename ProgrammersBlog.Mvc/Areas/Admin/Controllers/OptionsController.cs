@@ -18,11 +18,20 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         private readonly AboutUsPageInfo _aboutUsPageInfo;
         private readonly IWritableOptions<AboutUsPageInfo> _aboutUsPageInfoWriter;
         private readonly IToastNotification _toastNotification;
-        public OptionsController(IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IWritableOptions<AboutUsPageInfo> aboutUsPageInfoWriter, IToastNotification toastNotification)
+        private readonly WebsiteInfo _websiteInfo;
+        private readonly IWritableOptions<WebsiteInfo> _websiteInfoWriter;
+        private readonly SmtpSettings _smtpSettings;
+        private readonly IWritableOptions<SmtpSettings> _smtpSettingsWriter;
+
+        public OptionsController(IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IWritableOptions<AboutUsPageInfo> aboutUsPageInfoWriter, IToastNotification toastNotification, IOptionsSnapshot<WebsiteInfo> websiteInfo, IWritableOptions<WebsiteInfo> websiteInfoWriter, IOptionsSnapshot<SmtpSettings> smtpSettings, IWritableOptions<SmtpSettings> smtpSettingsWriter)
         {
             _aboutUsPageInfo = aboutUsPageInfo.Value;
             _aboutUsPageInfoWriter = aboutUsPageInfoWriter;
             _toastNotification = toastNotification;
+            _websiteInfo = websiteInfo.Value;
+            _websiteInfoWriter = websiteInfoWriter;
+            _smtpSettings = smtpSettings.Value;
+            _smtpSettingsWriter = smtpSettingsWriter;
         }
 
         [HttpGet]
@@ -30,6 +39,7 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         {
             return View(_aboutUsPageInfo);
         }
+
         [HttpPost]
         public IActionResult About(AboutUsPageInfo aboutUsPageInfo)
         {
@@ -49,7 +59,63 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                 });
                 return View(aboutUsPageInfo);
             }
-            return View(_aboutUsPageInfo);
+            return View(aboutUsPageInfo);
+        }
+        [HttpGet]
+        public IActionResult GeneralSettings()
+        {
+            return View(_websiteInfo);
+        }
+
+        [HttpPost]
+        public IActionResult GeneralSettings(WebsiteInfo websiteInfo)
+        {
+            if (ModelState.IsValid)
+            {
+                _websiteInfoWriter.Update(x =>
+                {
+                    x.Title = websiteInfo.Title;
+                    x.MenuTitle = websiteInfo.MenuTitle;
+                    x.SeoAuthor = websiteInfo.SeoAuthor;
+                    x.SeoDescription = websiteInfo.SeoDescription;
+                    x.SeoTags = websiteInfo.SeoTags;
+                });
+                _toastNotification.AddSuccessToastMessage("Sitenizin Genel Ayarları Başarıyla Güncellenmiştir.", new ToastrOptions
+                {
+                    Title = "Başarılı İşlem!"
+                });
+                return View(websiteInfo);
+            }
+            return View(websiteInfo);
+        }
+
+        [HttpGet]
+        public IActionResult EmailSettings()
+        {
+            return View(_smtpSettings);
+        }
+
+        [HttpPost]
+        public IActionResult EmailSettings(SmtpSettings smtpSettings)
+        {
+            if (ModelState.IsValid)
+            {
+                _smtpSettingsWriter.Update(x =>
+                {
+                    x.Server = smtpSettings.Server;
+                    x.Port = smtpSettings.Port;
+                    x.SenderName = smtpSettings.SenderName;
+                    x.SenderEmail = smtpSettings.SenderEmail;
+                    x.Username = smtpSettings.Username;
+                    x.Password = smtpSettings.Password;
+                });
+                _toastNotification.AddSuccessToastMessage("Sitenizin E-posta Ayarları Başarıyla Güncellenmiştir.", new ToastrOptions
+                {
+                    Title = "Başarılı İşlem!"
+                });
+                return View(smtpSettings);
+            }
+            return View(smtpSettings);
         }
     }
 }

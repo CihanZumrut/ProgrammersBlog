@@ -32,6 +32,8 @@ namespace ProgrammersBlog.Mvc
             services.Configure<WebsiteInfo>(Configuration.GetSection("WebSiteInfo"));
             services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
             services.ConfigureWritable<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
+            services.ConfigureWritable<WebsiteInfo>(Configuration.GetSection("WebSiteInfo"));
+            services.ConfigureWritable<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
             services.AddControllersWithViews(options => 
             {
                 options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(value =>"Bu alan boþ geçilmemelidir.");
