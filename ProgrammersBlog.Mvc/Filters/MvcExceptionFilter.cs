@@ -49,7 +49,7 @@ namespace ProgrammersBlog.Mvc.Filters
                         mvcErrorModel.Detail = context.Exception.Message;
                         result = new ViewResult { ViewName = "Error" };
                         result.StatusCode = 403;
-                        _logger.LogError(context.Exception, context.Exception.Message)
+                        _logger.LogError(context.Exception, context.Exception.Message);
                         break;
                     default:
                         mvcErrorModel.Message =
