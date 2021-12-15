@@ -32,17 +32,17 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
 
         public OptionsController(IOptionsSnapshot<AboutUsPageInfo> aboutUsPageInfo, IWritableOptions<AboutUsPageInfo> aboutUsPageInfoWriter, IToastNotification toastNotification, IOptionsSnapshot<WebsiteInfo> websiteInfo, IWritableOptions<WebsiteInfo> websiteInfoWriter, IOptionsSnapshot<SmtpSettings> smtpSettings, IWritableOptions<SmtpSettings> smtpSettingsWriter, IOptionsSnapshot<ArticleRightSideBarWidgetOptions> articleRightSideBarWidgetOptions, IWritableOptions<ArticleRightSideBarWidgetOptions> articleRightSideBarWidgetOptionsWriter, ICategoryService categoryService, IMapper mapper)
         {
-            _aboutUsPageInfo = aboutUsPageInfo.Value;
             _aboutUsPageInfoWriter = aboutUsPageInfoWriter;
             _toastNotification = toastNotification;
-            _websiteInfo = websiteInfo.Value;
             _websiteInfoWriter = websiteInfoWriter;
-            _smtpSettings = smtpSettings.Value;
             _smtpSettingsWriter = smtpSettingsWriter;
-            _articleRightSideBarWidgetOptions = articleRightSideBarWidgetOptions.Value;
             _articleRightSideBarWidgetOptionsWriter = articleRightSideBarWidgetOptionsWriter;
             _categoryService = categoryService;
             _mapper = mapper;
+            _articleRightSideBarWidgetOptions = articleRightSideBarWidgetOptions.Value;
+            _smtpSettings = smtpSettings.Value;
+            _websiteInfo = websiteInfo.Value;
+            _aboutUsPageInfo = aboutUsPageInfo.Value;
         }
 
         [HttpGet]
@@ -50,13 +50,12 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         {
             return View(_aboutUsPageInfo);
         }
-
         [HttpPost]
         public IActionResult About(AboutUsPageInfo aboutUsPageInfo)
         {
             if (ModelState.IsValid)
             {
-                _aboutUsPageInfoWriter.Update(x => 
+                _aboutUsPageInfoWriter.Update(x =>
                 {
                     x.Header = aboutUsPageInfo.Header;
                     x.Content = aboutUsPageInfo.Content;
@@ -64,11 +63,12 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                     x.SeoDescription = aboutUsPageInfo.SeoDescription;
                     x.SeoTags = aboutUsPageInfo.SeoTags;
                 });
-                _toastNotification.AddSuccessToastMessage("Hakkımızda Sayfa İçerikleri Başarıyla Güncellenmiştir.", new ToastrOptions
+                _toastNotification.AddSuccessToastMessage("Hakkımızda Sayfa İçerikleri başarıyla güncellenmiştir.", new ToastrOptions
                 {
                     Title = "Başarılı İşlem!"
                 });
                 return View(aboutUsPageInfo);
+
             }
             return View(aboutUsPageInfo);
         }
@@ -77,7 +77,6 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
         {
             return View(_websiteInfo);
         }
-
         [HttpPost]
         public IActionResult GeneralSettings(WebsiteInfo websiteInfo)
         {
@@ -91,21 +90,20 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                     x.SeoDescription = websiteInfo.SeoDescription;
                     x.SeoTags = websiteInfo.SeoTags;
                 });
-                _toastNotification.AddSuccessToastMessage("Sitenizin Genel Ayarları Başarıyla Güncellenmiştir.", new ToastrOptions
+                _toastNotification.AddSuccessToastMessage("Sitenizin genel ayarları başarıyla güncellenmiştir.", new ToastrOptions
                 {
                     Title = "Başarılı İşlem!"
                 });
                 return View(websiteInfo);
+
             }
             return View(websiteInfo);
         }
-
         [HttpGet]
         public IActionResult EmailSettings()
         {
             return View(_smtpSettings);
         }
-
         [HttpPost]
         public IActionResult EmailSettings(SmtpSettings smtpSettings)
         {
@@ -120,26 +118,26 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                     x.Username = smtpSettings.Username;
                     x.Password = smtpSettings.Password;
                 });
-                _toastNotification.AddSuccessToastMessage("Sitenizin E-posta Ayarları Başarıyla Güncellenmiştir.", new ToastrOptions
+                _toastNotification.AddSuccessToastMessage("Sitenizin e-posta ayarları başarıyla güncellenmiştir.", new ToastrOptions
                 {
                     Title = "Başarılı İşlem!"
                 });
                 return View(smtpSettings);
+
             }
             return View(smtpSettings);
         }
-
         [HttpGet]
-        public async Task<IActionResult> ArticleRightSideBarWidgetOptionsSettings()
+        public async Task<IActionResult> ArticleRightSideBarWidgetSettings()
         {
             var categoriesResult = await _categoryService.GetAllByNonDeletedAndActiveAsync();
-            var articleRightSideBarWidgetOptionsViewModel = _mapper.Map<ArticleRightSideBarWidgetOptionsViewModel>(_articleRightSideBarWidgetOptions);
+            var articleRightSideBarWidgetOptionsViewModel =
+                _mapper.Map<ArticleRightSideBarWidgetOptionsViewModel>(_articleRightSideBarWidgetOptions);
             articleRightSideBarWidgetOptionsViewModel.Categories = categoriesResult.Data.Categories;
             return View(articleRightSideBarWidgetOptionsViewModel);
         }
-
         [HttpPost]
-        public async Task<IActionResult> ArticleRightSideBarWidgetOptionsSettings(ArticleRightSideBarWidgetOptionsViewModel articleRightSideBarWidgetOptionsViewModel)
+        public async Task<IActionResult> ArticleRightSideBarWidgetSettings(ArticleRightSideBarWidgetOptionsViewModel articleRightSideBarWidgetOptionsViewModel)
         {
             var categoriesResult = await _categoryService.GetAllByNonDeletedAndActiveAsync();
             articleRightSideBarWidgetOptionsViewModel.Categories = categoriesResult.Data.Categories;
@@ -158,13 +156,14 @@ namespace ProgrammersBlog.Mvc.Areas.Admin.Controllers
                     x.MaxViewCount = articleRightSideBarWidgetOptionsViewModel.MaxViewCount;
                     x.MinViewCount = articleRightSideBarWidgetOptionsViewModel.MinViewCount;
                     x.MaxCommentCount = articleRightSideBarWidgetOptionsViewModel.MaxCommentCount;
-                    x.MaxCommentCount = articleRightSideBarWidgetOptionsViewModel.MinCommentCount;
+                    x.MinCommentCount = articleRightSideBarWidgetOptionsViewModel.MinCommentCount;
                 });
                 _toastNotification.AddSuccessToastMessage("Makale sayfalarınızın widget ayarları başarıyla güncellenmiştir.", new ToastrOptions
                 {
                     Title = "Başarılı İşlem!"
                 });
                 return View(articleRightSideBarWidgetOptionsViewModel);
+
             }
             return View(articleRightSideBarWidgetOptionsViewModel);
         }

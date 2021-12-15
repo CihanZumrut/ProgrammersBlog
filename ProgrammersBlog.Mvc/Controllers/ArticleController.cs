@@ -23,11 +23,11 @@ namespace ProgrammersBlog.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Search(string keyword, int currentPage = 1, int pageSize = 5, bool isAscending = false)
         {
-            var searchresult = await _articleService.SearchAsync(keyword, currentPage, pageSize, isAscending);
-            if (searchresult.ResultStatus == ResultStatus.Success)
+            var searchResult = await _articleService.SearchAsync(keyword, currentPage, pageSize, isAscending);
+            if (searchResult.ResultStatus == ResultStatus.Success)
                 return View(new ArticleSearchViewModel
                 {
-                    ArticleListDto = searchresult.Data,
+                    ArticleListDto = searchResult.Data,
                     Keyword = keyword
                 });
             return NotFound();
@@ -38,12 +38,14 @@ namespace ProgrammersBlog.Mvc.Controllers
             var articleResult = await _articleService.GetAsync(articleId);
             if (articleResult.ResultStatus == ResultStatus.Success)
             {
-                var userArticles = await _articleService.GetAllByUserIdOnFilter(articleResult.Data.Article.UserId,_articleRightSideBarWidgetOptions.FilterBy, _articleRightSideBarWidgetOptions.OrderBy, _articleRightSideBarWidgetOptions.IsAscending, _articleRightSideBarWidgetOptions.TakeSize, _articleRightSideBarWidgetOptions.CategoryId, _articleRightSideBarWidgetOptions.StartAt, _articleRightSideBarWidgetOptions.EndAt, _articleRightSideBarWidgetOptions.MaxViewCount, _articleRightSideBarWidgetOptions.MinViewCount, _articleRightSideBarWidgetOptions.MaxCommentCount, _articleRightSideBarWidgetOptions.MinCommentCount);
+                var userArticles = await _articleService.GetAllByUserIdOnFilter(articleResult.Data.Article.UserId,
+                    _articleRightSideBarWidgetOptions.FilterBy, _articleRightSideBarWidgetOptions.OrderBy, _articleRightSideBarWidgetOptions.IsAscending, _articleRightSideBarWidgetOptions.TakeSize, _articleRightSideBarWidgetOptions.CategoryId, _articleRightSideBarWidgetOptions.StartAt,
+                    _articleRightSideBarWidgetOptions.EndAt, _articleRightSideBarWidgetOptions.MinViewCount, _articleRightSideBarWidgetOptions.MaxViewCount, _articleRightSideBarWidgetOptions.MinCommentCount, _articleRightSideBarWidgetOptions.MaxCommentCount);
                 await _articleService.IncreaseViewCountAsync(articleId);
-                return View(new ArticleDetailViewModel 
+                return View(new ArticleDetailViewModel
                 {
                     ArticleDto = articleResult.Data,
-                    ArticleDetailRightSideBarViewModel = new ArticleDetailRightSideBarViewModel 
+                    ArticleDetailRightSideBarViewModel = new ArticleDetailRightSideBarViewModel
                     {
                         ArticleListDto = userArticles.Data,
                         Header = _articleRightSideBarWidgetOptions.Header,
