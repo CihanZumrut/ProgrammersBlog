@@ -9,7 +9,9 @@ namespace ProgrammersBlog.Shared.Data.Abstract
     public interface IEntityRepository<T> where T : class, IEntity, new()// T is a generic type.
     {
         Task<T> GetAsync(Expression<Func<T, bool>> predicate,params Expression<Func<T, object>>[] includeProperties); // var kullanici = repository.GetAsync(k => k.Id==15);
+        Task<T> GetAsyncV2(IList<Expression<Func<T, bool>>> predicates, IList<Expression<Func<T, object>>> includeProperties);
         Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> predicate=null, params Expression<Func<T, object>>[] includeProperties);
+        Task<IList<T>> GetAllAsyncV2(IList<Expression<Func<T, bool>>> predicates, IList<Expression<Func<T, object>>> includeProperties);
         Task<T> AddAsync(T entity);
         Task<T> UpdateAsync(T entity);
         Task DeleteAsync(T entity);
