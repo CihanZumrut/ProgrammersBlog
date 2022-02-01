@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,6 +29,15 @@ namespace ProgrammersBlog.Mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IImageHelper, ImageHelper>();
+            services.AddSingleton(provider => new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new UserProfile(provider.GetService<IImageHelper>()));
+                cfg.AddProfile(new CategoryProfile());
+                cfg.AddProfile(new ArticleProfile());
+                cfg.AddProfile(new ViewModelsProfile());
+                cfg.AddProfile(new CommentProfile());
+            }).CreateMapper());
             services.Configure<AboutUsPageInfo>(Configuration.GetSection("AboutUsPageInfo"));
             services.Configure<WebsiteInfo>(Configuration.GetSection("WebsiteInfo"));
             services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
@@ -48,9 +58,7 @@ namespace ProgrammersBlog.Mvc
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             }).AddNToastNotifyToastr();
             services.AddSession();
-            services.AddAutoMapper(typeof(CategoryProfile), typeof(ArticleProfile), typeof(UserProfile), typeof(ViewModelsProfile), typeof(CommentProfile));
             services.LoadMyServices(connectionString: Configuration.GetConnectionString("LocalDB"));
-            services.AddScoped<IImageHelper, ImageHelper>();
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = new PathString("/Admin/Auth/Login");
