@@ -1,6 +1,7 @@
 ﻿using ProgrammersBlog.Shared.Entities.Abstract;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -18,5 +19,6 @@ namespace ProgrammersBlog.Shared.Data.Abstract
         Task<IList<T>> SearchAsync(IList<Expression<Func<T, bool>>> predicates, params Expression<Func<T, object>>[] includeProperties);
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
         Task<int> CountAsync(Expression<Func<T, bool>> predicate = null);
+        IQueryable<T> GetAsQueryable();
     }
 }
