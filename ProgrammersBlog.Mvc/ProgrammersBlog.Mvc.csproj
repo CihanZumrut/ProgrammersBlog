@@ -24,4 +24,8 @@
     <ProjectReference Include="..\ProgrammersBlog.Shared\ProgrammersBlog.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\ComingSoon\vendor\countdowntime\" />
+  </ItemGroup>
+
 </Project>
